@@ -1,0 +1,11 @@
+body{
+	margin:0;
+	background:black;
+}
+#game{
+    background: url('asset/background.png');
+}
+
+.load-images{
+	display:none;
+}
