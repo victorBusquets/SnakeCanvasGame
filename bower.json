@@ -1,0 +1,17 @@
+{
+  "name": "SnakeGame",
+  "description": "Snake game developed with canvas",
+  "authors": "Victor Busquets Boro",
+  "license": "ISC",
+  "keywords": [
+    "canvas",
+    "snake",
+	"game",
+    "javascript"
+  ],
+  "homepage": "",
+  "ignore": [],
+  "dependencies": {
+    "jquery": "^3.1.0"
+  }
+}

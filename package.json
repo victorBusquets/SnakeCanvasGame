@@ -1,0 +1,23 @@
+{
+  "name": "SnakeGame",
+  "version": "1.0.0",
+  "description": "Snake game developed with canvas",
+  "scripts": {
+    "postinstall": "node_modules/.bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victorBusquets/SnakeGame"
+  },
+  "keywords": [
+    "canvas",
+    "game",
+    "javascript",
+    "snake"
+  ],
+  "author": "Victor Busquets Boro",
+  "license": "ISC",
+  "dependencies": {
+    "bower": "^1.7.9"
+  }
+}
