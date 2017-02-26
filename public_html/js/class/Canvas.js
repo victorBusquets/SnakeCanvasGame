@@ -1,6 +1,7 @@
-function Canvas(domId, fullSize){
+function Canvas(domId, gameSize, fullSize){
 	var canvas   = document.getElementById( domId ),
-		context  = canvas.getContext("2d");
+		context  = canvas.getContext("2d"),
+		cellSize = 0;
 		
 	function setColor(color){
 		context.fillStyle = color;
@@ -71,7 +72,17 @@ function Canvas(domId, fullSize){
 		context.restore();
 	};	
 	
-	if( fullSize ) setFullSize();
+	function setCellSize(){
+		cellSize = getWidth() / gameSize.x;
+	};
+	
+	function init(){		
+		if( fullSize ){ setFullSize() }
+		
+		setCellSize();
+	};
+	
+	init();
 		
 		
 	return {

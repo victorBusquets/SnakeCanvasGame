@@ -1,3 +1,5 @@
-function Game (size){
-	var canvas = new Canvas( "game", true );
+function Game ( gameSize ){
+	var canvas 	= new Canvas( "game", gameSize, true ),
+		snake 	= new Snake();
+
 };

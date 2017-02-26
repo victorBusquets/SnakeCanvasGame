@@ -3,5 +3,6 @@ $( document ).ready(function() {
 		x:30,
 		y:15
 	};
+	
 	new Game( gameSize );
 });
