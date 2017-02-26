@@ -11,14 +11,20 @@ function Node(position, orientation, img){
 	function setPosition(newPosition){
 		position = newPosition;
 	};
-	function getImg(){
-		return img;
-	};
 	function setImg(newImg){
 		img = newImg;
 	};	
-	function paint(){
-		//canvas function
+	function paint( canvas ){
+		var config = {
+			'img':		img,
+			'startX': 	position.getX(), 
+			'startY': 	position.getY(), 
+			'width': 	canvas.getSellSize(), 
+			'height': 	canvas.getSellSize(), 
+			'rotate': 	orientation 
+		};
+		
+		canvas.drawRotatedImage( config );		
 	};
 	
 	return {
@@ -26,7 +32,6 @@ function Node(position, orientation, img){
 		setOrientation: setOrientation,
 		getPosition: getPosition,
 		setPosition: setPosition,
-		getImg: getImg,
 		setImg: setImg,
 		paint: paint
 	};

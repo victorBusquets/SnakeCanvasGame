@@ -28,6 +28,7 @@ function Canvas(domId, gameSize, fullSize){
 	function setHeight(height){
 		canvas.height = height;
 	};
+	
 	function setFullSize(){
 		var height = $(window).height()-4,
 			width = $(window).width(),
@@ -38,6 +39,7 @@ function Canvas(domId, gameSize, fullSize){
 		setWidth( widthFinal );
 		centerCanvas( width-widthFinal, height-heightFinal );
 	};
+	
 	function centerCanvas(widthDiff, heightDiff){
 		$("#"+domId).css(
 			{
@@ -48,13 +50,18 @@ function Canvas(domId, gameSize, fullSize){
 		);
 	};
 	function drawImage( img, startX, startY, width, height ){
-		context.drawImage( img, startX, startY, width, height );
+		context.drawImage( img, startX,	startY, width, height );
 	};
 	
-	function drawRotatedImage( img, startX, startY, width, height, rotate ){
-		var degrees = rotate * 90;
-		rotateContext( startX + ( width/2 ), startY + ( height/2 ), degrees );
-		drawImage( img, -( width/2 ), -( height/2 ), width, height );
+	function drawRotatedImage( config ){
+		var degrees = config.rotate * 90;
+			rotateX = getProportionalSize(config.startX) + ( config.width/2 ),
+			rotateY = getProportionalSize(config.startY) + ( config.height/2 );
+			
+		console.log( rotateX, rotateY, degrees );
+			
+		rotateContext(  rotateX, rotateY, degrees );		
+		drawImage( config.img, -( config.width/2 ), -( config.height/2 ), config.width, config.height );
 		restoreContext();
 	};
 		
@@ -72,8 +79,16 @@ function Canvas(domId, gameSize, fullSize){
 		context.restore();
 	};	
 	
+	function getProportionalSize( size ){
+		return size * cellSize;
+	}
+	
 	function setCellSize(){
 		cellSize = getWidth() / gameSize.x;
+	};
+	
+	function getSellSize(){
+		return cellSize;
 	};
 	
 	function init(){		
@@ -90,6 +105,7 @@ function Canvas(domId, gameSize, fullSize){
 		clearCanvas: clearCanvas,
 		clearRect: clearRect,
 		drawImage: drawImage,
+		getSellSize: getSellSize,
 		drawRotatedImage: drawRotatedImage
 	}
 };
