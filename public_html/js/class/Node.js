@@ -26,6 +26,11 @@ function Node(position, orientation, img){
 		
 		canvas.drawRotatedImage( config );		
 	};
+	function clear( canvas ){
+		var cellSize = canvas.getSellSize();
+		
+		canvas.clearRect( position.getX(), position.getY(), cellSize, cellSize );
+	};
 	
 	return {
 		getOrientation: getOrientation,
@@ -33,6 +38,7 @@ function Node(position, orientation, img){
 		getPosition: getPosition,
 		setPosition: setPosition,
 		setImg: setImg,
-		paint: paint
+		paint: paint,
+		clear: clear
 	};
 };

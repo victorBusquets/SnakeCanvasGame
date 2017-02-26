@@ -9,8 +9,8 @@ function Canvas(domId, gameSize, fullSize){
 	function clearCanvas(){
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	};
-	function clearRect(startX, startY, sizeX, sizeY){
-		context.clearRect(startX, startY, sizeX, sizeY);
+	function clearRect(x, y, sizeX, sizeY){
+		context.clearRect( getProportionalSize(x), getProportionalSize(y), sizeX, sizeY );
 	};
 	function fillRect(startX, startY, sizeX, sizeY, color){
 		if(color) setColor(color);
@@ -57,9 +57,7 @@ function Canvas(domId, gameSize, fullSize){
 		var degrees = config.rotate * 90;
 			rotateX = getProportionalSize(config.startX) + ( config.width/2 ),
 			rotateY = getProportionalSize(config.startY) + ( config.height/2 );
-			
-		console.log( rotateX, rotateY, degrees );
-			
+						
 		rotateContext(  rotateX, rotateY, degrees );		
 		drawImage( config.img, -( config.width/2 ), -( config.height/2 ), config.width, config.height );
 		restoreContext();

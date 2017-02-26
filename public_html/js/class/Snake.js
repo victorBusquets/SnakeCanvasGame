@@ -19,6 +19,12 @@ function Snake(){
 		}
 	};
 	
+	function clear( canvas ){
+		for( var i=0; i<nodes.length; i++ ){
+			nodes[i].clear(canvas);
+		}
+	};
+	
 	function init(){
 		prepareSnake();
 	};
@@ -26,6 +32,7 @@ function Snake(){
 	init();
 
 	return {
-		paint: paint
+		paint: paint,
+		clear: clear
 	}
 };
