@@ -14,6 +14,9 @@ function Node(position, orientation, img){
 	function setImg(newImg){
 		img = newImg;
 	};	
+	function getImg(){
+		return img;
+	};
 	function paint( canvas ){
 		var config = {
 			'img':		img,
@@ -38,6 +41,7 @@ function Node(position, orientation, img){
 		getPosition: getPosition,
 		setPosition: setPosition,
 		setImg: setImg,
+		getImg: getImg,
 		paint: paint,
 		clear: clear
 	};

@@ -46,6 +46,10 @@ function Snake( gameSize ){
 		return values;
 	};
 	
+	function setDirection( newDirection ){
+		direction = Math.abs( newDirection - direction )==2 ? direction : newDirection ;
+	}
+	
 	function newLimitPosition(position){
 		var x = position.getX(),
 			y = position.getY();
@@ -70,19 +74,47 @@ function Snake( gameSize ){
 		return new Node( position, direction, assets.snakeTop );
 	};
 	
-	function updateStartNode(){
-		nodes[0].setImg( assets.snakeMid );
+	function updateStartNode( newNode ){
+		var firstNode = nodes[0],
+			newOrientation = newNode.getOrientation(),
+			lastOrientation = nodes[1].getOrientation(),
+			changeOrientation = ( firstNode.getOrientation() !== newOrientation ),
+			newImage = ( changeOrientation ? assets.snakeCor : assets.snakeMid );
+			
+		if( changeOrientation ) firstNode.setOrientation( getCornerOrientation(newOrientation, lastOrientation) );
+		firstNode.setImg( newImage );
+	};
+	
+	function getCornerOrientation(newOrientation, lastOrientation){
+		var orientation = 0;
+
+		if( clockWiseRotation( newOrientation, lastOrientation ) ){
+			orientation = lastOrientation + 1 ;
+		}else{
+			orientation = newOrientation - 1;
+		}
+		
+		return orientation;
+	};
+	
+	function clockWiseRotation( newOrientation, lastOrientation ){
+		return ( (newOrientation > lastOrientation) || (lastOrientation==3 && newOrientation==0) )&& !(lastOrientation==0 && newOrientation==3);
 	};
 	
 	function updateEndNode(){
 		nodes[nodes.length-1].setImg( assets.snakeBot );
+		if( endIsNotCorner() )nodes[nodes.length-1].setOrientation( nodes[nodes.length-2].getOrientation( ) );
+	};
+	
+	function endIsNotCorner(){
+		return nodes[nodes.length-2].getImg() !== assets.snakeCor;
 	};
 	
 	function update(){
 		var node = createNewNode();
 	
 		nodes.pop();	//REMOVING LAST NODE	
-		updateStartNode();
+		updateStartNode(node);
 		updateEndNode();
 		nodes.unshift( node ); //ADDING NEW NODE
 	};
@@ -100,6 +132,7 @@ function Snake( gameSize ){
 	init();
 
 	return {
+		setDirection: setDirection,
 		paint: paint,
 		loop: loop,
 		clear: clear
