@@ -10,8 +10,9 @@ function Game ( gameSize ){
 	};
 	
 	function loop(){
-		setInterval(function(){
+		setTimeout(function(){
 			snake.loop( canvas );
+			loop();
 		}, speed);
 	};
 	

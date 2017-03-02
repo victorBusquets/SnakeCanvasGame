@@ -1,4 +1,4 @@
-function Node(position, orientation, img){
+function Node(position, orientation, img, jumperNode){
 	function getOrientation(){
 		return orientation;
 	};
@@ -35,11 +35,16 @@ function Node(position, orientation, img){
 		canvas.clearRect( position.getX(), position.getY(), cellSize, cellSize );
 	};
 	
+	function isJumperNode(){
+		return jumperNode || false;
+	};
+	
 	return {
 		getOrientation: getOrientation,
 		setOrientation: setOrientation,
 		getPosition: getPosition,
 		setPosition: setPosition,
+		isJumperNode: isJumperNode,
 		setImg: setImg,
 		getImg: getImg,
 		paint: paint,

@@ -54,51 +54,85 @@ function Snake( gameSize ){
 		var x = position.getX(),
 			y = position.getY();
 			
-		position.setX( x<0 ? gameSize.x-1 : ( x>gameSize.x ? 0 : x ) );
-		position.setY( y<0 ? gameSize.y-1 : ( y>gameSize.y ? 0 : y ) );
+		position.setX( x<0 ? gameSize.x-1 : ( x>gameSize.x-1 ? 0 : x ) );
+		position.setY( y<0 ? gameSize.y-1 : ( y>gameSize.y-1 ? 0 : y ) );
 		
 		return position;
 	};
 	
 	function outOfCanvas(position){
-		return position.getX()<0 || position.getY()<0 || position.getX()>gameSize.x-1 || position.getX()>gameSize.y-1;
+		return position.getX()<0 || position.getY()<0 || position.getX()>gameSize.x-1 || position.getY()>gameSize.y-1;
 	};
 	
 	function createNewNode(){
 		var nodeToClone  = nodes[0],
+			jumperNode = false,
 			updateValues = getUpdateDirectionValues();
 			position 	 = new Position( nodeToClone.getPosition().getX() + updateValues.x, nodeToClone.getPosition().getY() + updateValues.y );
 		
-		position = ( outOfCanvas( position ) ? newLimitPosition(position) : position );
+			if( outOfCanvas( position ) ){
+				position = newLimitPosition(position);
+				jumperNode = true;
+			}
 		
-		return new Node( position, direction, assets.snakeTop );
+		return new Node( position, direction, assets.snakeTop, jumperNode);
 	};
 	
 	function updateStartNode( newNode ){
 		var firstNode = nodes[0],
-			newOrientation = newNode.getOrientation(),
-			lastOrientation = nodes[1].getOrientation(),
-			changeOrientation = ( firstNode.getOrientation() !== newOrientation ),
+			secondNode = nodes[1],
+			changeOrientation = ( firstNode.getOrientation() !== newNode.getOrientation() ),
 			newImage = ( changeOrientation ? assets.snakeCor : assets.snakeMid );
 			
-		if( changeOrientation ) firstNode.setOrientation( getCornerOrientation(newOrientation, lastOrientation) );
+		if( changeOrientation ){
+			var cornerOrientation = getCornerOrientation(
+				newNode.getPosition().get(),
+				firstNode.getPosition().get(),
+				secondNode.getPosition().get(),
+				newNode.isJumperNode(),
+				firstNode.isJumperNode()
+			);
+			firstNode.setOrientation( cornerOrientation );
+		}
 		firstNode.setImg( newImage );
 	};
 	
-	function getCornerOrientation(newOrientation, lastOrientation){
-		var orientation = 0;
+	function getCornerOrientation( position1, position2, position3, jumperNode1, jumperNode2 ){
+		var orientation = 1,
+			firstDirection = getDirectionBeetwenPosition( position1, position2, jumperNode1 ),
+			secondDirection = getDirectionBeetwenPosition( position2, position3, jumperNode2 );
+		
+		switch( firstDirection+secondDirection ){
+			case 'RD': // Right-Down
+			case 'UL': // Up-Left
+				orientation = 2;
+			break;
+			case 'RU': // Right-Up
+			case 'DL': // Down-left
+				orientation = 3;
+			break;
+			case 'DR': // Down-Right
+			case 'LU': // Left-Up
+				orientation = 0;
+			break;
+		}
 
-		if( clockWiseRotation( newOrientation, lastOrientation ) ){
-			orientation = lastOrientation + 1 ;
-		}else{
-			orientation = newOrientation - 1;
+		return orientation;
+	};	
+	
+	function getDirectionBeetwenPosition( position1, position2, jumperNode){
+		var direction,
+			condition = position1.x < position2.x ,
+			values = 'RL';
+		
+		if( position1.x === position2.x ){
+			condition = position1.y < position2.y;
+			values = 'DU';
 		}
 		
-		return orientation;
-	};
-	
-	function clockWiseRotation( newOrientation, lastOrientation ){
-		return ( (newOrientation > lastOrientation) || (lastOrientation==3 && newOrientation==0) )&& !(lastOrientation==0 && newOrientation==3);
+		condition = jumperNode ? !condition : condition;
+		
+		return ( condition ? values[0] : values[1] );
 	};
 	
 	function updateEndNode(){
@@ -117,12 +151,14 @@ function Snake( gameSize ){
 		updateStartNode(node);
 		updateEndNode();
 		nodes.unshift( node ); //ADDING NEW NODE
+		return true;
 	};
 	
 	function loop(canvas){
 		clear( canvas );
-		update();
-		paint( canvas );
+		$.when( update() ).done(function(){
+			paint( canvas );
+		});
 	};
 	
 	function init(){
