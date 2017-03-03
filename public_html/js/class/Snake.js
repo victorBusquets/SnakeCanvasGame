@@ -26,6 +26,10 @@ function Snake( gameSize ){
 		}
 	};
 	
+	function getHead(){
+		return nodes[0];
+	};
+	
 	function getUpdateDirectionValues(){
 		var values;
 		
@@ -169,6 +173,7 @@ function Snake( gameSize ){
 
 	return {
 		setDirection: setDirection,
+		getHead: getHead,
 		paint: paint,
 		loop: loop,
 		clear: clear
