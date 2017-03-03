@@ -52,30 +52,16 @@ function Snake( gameSize ){
 	
 	function setDirection( newDirection ){
 		direction = Math.abs( newDirection - direction )==2 ? direction : newDirection ;
-	}
-	
-	function newLimitPosition(position){
-		var x = position.getX(),
-			y = position.getY();
-			
-		position.setX( x<0 ? gameSize.x-1 : ( x>gameSize.x-1 ? 0 : x ) );
-		position.setY( y<0 ? gameSize.y-1 : ( y>gameSize.y-1 ? 0 : y ) );
+	};
 		
-		return position;
-	};
-	
-	function outOfCanvas(position){
-		return position.getX()<0 || position.getY()<0 || position.getX()>gameSize.x-1 || position.getY()>gameSize.y-1;
-	};
-	
 	function createNewNode(){
 		var nodeToClone  = nodes[0],
 			jumperNode = false,
 			updateValues = getUpdateDirectionValues();
 			position 	 = new Position( nodeToClone.getPosition().getX() + updateValues.x, nodeToClone.getPosition().getY() + updateValues.y );
 		
-			if( outOfCanvas( position ) ){
-				position = newLimitPosition(position);
+			if( position.outOfCanvas( gameSize ) ){
+				position.newPositionInLimits( gameSize );
 				jumperNode = true;
 			}
 		

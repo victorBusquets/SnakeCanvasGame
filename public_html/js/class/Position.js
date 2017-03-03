@@ -22,7 +22,21 @@ function Position( x, y ){
 		setY(newY);
 	};
 	
+	function newPositionInLimits(gameSize){
+		var x = getX(),
+			y = getY();
+			
+		setX( x<0 ? gameSize.x-1 : ( x>gameSize.x-1 ? 0 : x ) );
+		setY( y<0 ? gameSize.y-1 : ( y>gameSize.y-1 ? 0 : y ) );
+	};
+	
+	function outOfCanvas(gameSize){
+		return getX()<0 || getY()<0 || getX()>gameSize.x-1 || getY()>gameSize.y-1;
+	};
+	
 	return {
+		newPositionInLimits: newPositionInLimits,
+		outOfCanvas: outOfCanvas,
 		getX: getX,
 		setX: setX,
 		getY: getY,
