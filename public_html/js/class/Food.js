@@ -9,7 +9,7 @@ function Food( gameSize, canvas ){
 		{
 			score: 500,
 			stepLimit: 3,
-			maxSteps: 25,
+			maxSteps: 35,
 			img: assets.foodType1
 		}
 	];

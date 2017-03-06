@@ -1,4 +1,4 @@
-function Snake( gameSize ){
+function Snake( gameSize, canvas ){
 	var nodes = new Array(),
 		direction = 0;
 	
@@ -10,13 +10,13 @@ function Snake( gameSize ){
 		nodes[4] = new Node( new Position( 2, 2 ), 3, 'snakeBot' );
 	};
 	
-	function paint( canvas ){
+	function paint( ){
 		for( var i=0; i<nodes.length; i++ ){
 			nodes[i].paint(canvas);
 		}
 	};
 	
-	function clear( canvas ){
+	function clear( ){
 		for( var i=0; i<nodes.length; i++ ){
 			nodes[i].clear(canvas);
 		}
@@ -141,13 +141,14 @@ function Snake( gameSize ){
 		return nodes[nodes.length-2].getImg() !== assets.snakeCor;
 	};
 	
-	function update(){
+	function updatePosition(){
 		var node = createNewNode();
 			lastNode = nodes[nodes.length-1];
 			
 		if( lastNode.isFeed() ){
 			lastNode.clearFeed();
 		}else{
+			nodes[nodes.length-1].clear(canvas) //REMOVING LAST NODE
 			nodes.pop();	//REMOVING LAST NODE	
 		}
 		updateStartNode(node);
@@ -160,13 +161,11 @@ function Snake( gameSize ){
 		getHead().setFeed();
 	};
 	
-	function loop(canvas){
-		clear( canvas );
-		$.when( update() ).done(function(){
-			paint( canvas );
-		});
+	function render( ){
+		clear( );
+		paint( );
 	};
-	
+		
 	function init(){
 		prepareSnake();
 	};
@@ -175,11 +174,12 @@ function Snake( gameSize ){
 
 	return {
 		himselfCollision: himselfCollision,
+		updatePosition: updatePosition,
 		setDirection: setDirection,
 		setFeedNode: setFeedNode,
 		getHead: getHead,
+		render: render,
 		paint: paint,
-		loop: loop,
 		clear: clear
 	}
 };
