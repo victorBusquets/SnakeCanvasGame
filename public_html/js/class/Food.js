@@ -3,12 +3,13 @@ function Food( gameSize, canvas ){
 	const TYPES = [
 		{
 			score: 100,
-			stepLimit: 3,
+			stepLimit: 5,
 			img: assets.foodType0
 		},
 		{
 			score: 500,
-			stepLimit: 2,
+			stepLimit: 3,
+			maxSteps: 25,
 			img: assets.foodType1
 		}
 	];
@@ -50,13 +51,19 @@ function Food( gameSize, canvas ){
 	function getPosition(){
 		return position;
 	};
+	function getMaxSteps(){
+		return type.maxSteps;
+	};
 	function newStep( snakeHeadPosition ){
-		if( getStepLimit() > stepCounter ){
-			stepCounter++;
-		}else{
-			initStepCounter();
+		stepCounter++;
+
+		if( stepCounter % getStepLimit() == 0){
 			clear();
 			updatePosition( snakeHeadPosition );
+		}
+		if(getMaxSteps() == stepCounter){
+			clear();
+			prepareFood();
 		}
 	};
 	function paint(){
@@ -123,6 +130,7 @@ function Food( gameSize, canvas ){
 	return {
 		prepareFood: prepareFood,
 		getPosition: getPosition,
-		newStep: newStep
+		newStep: newStep,
+		clear: clear
 	}
 };

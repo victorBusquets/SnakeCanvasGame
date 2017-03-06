@@ -1,9 +1,9 @@
 function Game ( gameSize ){
 	var canvas 	= new Canvas( "game", gameSize, true ),
-		snake 	= new Snake( gameSize ),
 		food 	= new Food( gameSize, canvas ),
-		eventHandler = new EventHandler( snake ),
-		speed 	= 300; 	
+		snake 	= new Snake( gameSize ),
+		eventHandler = new EventHandler( snake, food ),
+		speed 	= 150; 	
 
 	function init(){		
 		snake.paint( canvas );
@@ -14,6 +14,7 @@ function Game ( gameSize ){
 		setTimeout(function(){
 			snake.loop( canvas );
 			food.newStep( snake.getHead().getPosition() );
+			eventHandler.checkCollision(),
 			loop();
 		}, speed);
 	};

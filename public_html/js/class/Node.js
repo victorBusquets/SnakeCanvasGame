@@ -1,4 +1,5 @@
 function Node(position, orientation, img, jumperNode){
+	var feed;
 	function getOrientation(){
 		return orientation;
 	};
@@ -11,8 +12,17 @@ function Node(position, orientation, img, jumperNode){
 	function setPosition(newPosition){
 		position = newPosition;
 	};
+	function setFeed(){
+		feed = true;
+	};
+	function clearFeed(){
+		feed = false;
+	};
+	function isFeed(){
+		return feed;
+	};
 	function setImg(newImg){
-		img = newImg;
+		img = assets[newImg + ( isFeed() ? 'Feed' : '' )];
 	};	
 	function getImg(){
 		return img;
@@ -39,12 +49,21 @@ function Node(position, orientation, img, jumperNode){
 		return jumperNode || false;
 	};
 	
+	function init(){
+		setImg( img );
+	};
+	
+	init();
+	
 	return {
 		getOrientation: getOrientation,
 		setOrientation: setOrientation,
+		isJumperNode: isJumperNode,
 		getPosition: getPosition,
 		setPosition: setPosition,
-		isJumperNode: isJumperNode,
+		clearFeed: clearFeed,
+		setFeed: setFeed,
+		isFeed: isFeed,
 		setImg: setImg,
 		getImg: getImg,
 		paint: paint,

@@ -3,15 +3,15 @@ function Snake( gameSize ){
 		direction = 0;
 	
 	function prepareSnake(){
-		nodes[0] = new Node( new Position( 0, 0 ), 0, assets.snakeTop );
-		nodes[1] = new Node( new Position( 0, 1 ), 0, assets.snakeMid );		
-		nodes[2] = new Node( new Position( 0, 2 ), 0, assets.snakeCor );
-		nodes[3] = new Node( new Position( 1, 2 ), 3, assets.snakeMid );
-		nodes[4] = new Node( new Position( 2, 2 ), 3, assets.snakeCor );
-		nodes[5] = new Node( new Position( 2, 1 ), 2, assets.snakeMid );
-		nodes[6] = new Node( new Position( 2, 0 ), 2, assets.snakeCor );
-		nodes[7] = new Node( new Position( 1, 0 ), 1, assets.snakeCor );
-		nodes[8] = new Node( new Position( 1, 1 ), 0, assets.snakeBot );
+		nodes[0] = new Node( new Position( 0, 0 ), 0, 'snakeTop' );
+		nodes[1] = new Node( new Position( 0, 1 ), 0, 'snakeMid' );		
+		nodes[2] = new Node( new Position( 0, 2 ), 0, 'snakeCor' );
+		nodes[3] = new Node( new Position( 1, 2 ), 3, 'snakeMid' );
+		nodes[4] = new Node( new Position( 2, 2 ), 3, 'snakeCor' );
+		nodes[5] = new Node( new Position( 2, 1 ), 2, 'snakeMid' );
+		nodes[6] = new Node( new Position( 2, 0 ), 2, 'snakeCor' );
+		nodes[7] = new Node( new Position( 1, 0 ), 1, 'snakeCor' );
+		nodes[8] = new Node( new Position( 1, 1 ), 0, 'snakeBot' );
 	};
 	
 	function paint( canvas ){
@@ -65,14 +65,14 @@ function Snake( gameSize ){
 				jumperNode = true;
 			}
 		
-		return new Node( position, direction, assets.snakeTop, jumperNode);
+		return new Node( position, direction, 'snakeTop', jumperNode);
 	};
 	
 	function updateStartNode( newNode ){
 		var firstNode = nodes[0],
 			secondNode = nodes[1],
 			changeOrientation = ( firstNode.getOrientation() !== newNode.getOrientation() ),
-			newImage = ( changeOrientation ? assets.snakeCor : assets.snakeMid );
+			newImage = ( changeOrientation ? 'snakeCor' : 'snakeMid' );
 			
 		if( changeOrientation ){
 			var cornerOrientation = getCornerOrientation(
@@ -126,7 +126,7 @@ function Snake( gameSize ){
 	};
 	
 	function updateEndNode(){
-		nodes[nodes.length-1].setImg( assets.snakeBot );
+		nodes[nodes.length-1].setImg( 'snakeBot' );
 		if( endIsNotCorner() )nodes[nodes.length-1].setOrientation( nodes[nodes.length-2].getOrientation( ) );
 	};
 	
@@ -136,12 +136,21 @@ function Snake( gameSize ){
 	
 	function update(){
 		var node = createNewNode();
-	
-		nodes.pop();	//REMOVING LAST NODE	
+			lastNode = nodes[nodes.length-1];
+			
+		if( lastNode.isFeed() ){
+			lastNode.clearFeed();
+		}else{
+			nodes.pop();	//REMOVING LAST NODE	
+		}
 		updateStartNode(node);
 		updateEndNode();
 		nodes.unshift( node ); //ADDING NEW NODE
 		return true;
+	};
+	
+	function setFeedNode(){
+		getHead().setFeed();
 	};
 	
 	function loop(canvas){
@@ -159,6 +168,7 @@ function Snake( gameSize ){
 
 	return {
 		setDirection: setDirection,
+		setFeedNode: setFeedNode,
 		getHead: getHead,
 		paint: paint,
 		loop: loop,
