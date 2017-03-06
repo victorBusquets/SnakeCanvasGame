@@ -12,11 +12,21 @@ function EventHandler( snake, food ){
 		}
 	};
 	function checkCollision(){
-		if( snake.getHead().getPosition().equalPosition( food.getPosition() ) ){
+		var himselfCollision = snake.himselfCollision();
+		
+		if( foodCollision() ){
 			snake.setFeedNode();
 			food.prepareFood();
 			food.clear();
 		}
+		
+		if( himselfCollision ){
+			console.log( himselfCollision );
+		}
+
+	};
+	function foodCollision(){
+		return snake.getHead().getPosition().equalPosition( food.getPosition() );
 	};
 	function init(){
 		keyboardHandler();

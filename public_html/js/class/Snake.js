@@ -7,11 +7,7 @@ function Snake( gameSize ){
 		nodes[1] = new Node( new Position( 0, 1 ), 0, 'snakeMid' );		
 		nodes[2] = new Node( new Position( 0, 2 ), 0, 'snakeCor' );
 		nodes[3] = new Node( new Position( 1, 2 ), 3, 'snakeMid' );
-		nodes[4] = new Node( new Position( 2, 2 ), 3, 'snakeCor' );
-		nodes[5] = new Node( new Position( 2, 1 ), 2, 'snakeMid' );
-		nodes[6] = new Node( new Position( 2, 0 ), 2, 'snakeCor' );
-		nodes[7] = new Node( new Position( 1, 0 ), 1, 'snakeCor' );
-		nodes[8] = new Node( new Position( 1, 1 ), 0, 'snakeBot' );
+		nodes[4] = new Node( new Position( 2, 2 ), 3, 'snakeBot' );
 	};
 	
 	function paint( canvas ){
@@ -24,6 +20,17 @@ function Snake( gameSize ){
 		for( var i=0; i<nodes.length; i++ ){
 			nodes[i].clear(canvas);
 		}
+	};
+	
+	function himselfCollision(){
+		var headPosition = nodes[0].getPosition(),
+			collision = false;
+		
+		for( var i=1; i<nodes.length && !collision; i++ ){
+			collision = headPosition.equalPosition( nodes[i].getPosition() );
+		}
+
+		return collision ? i-1 : false;
 	};
 	
 	function getHead(){
@@ -167,6 +174,7 @@ function Snake( gameSize ){
 	init();
 
 	return {
+		himselfCollision: himselfCollision,
 		setDirection: setDirection,
 		setFeedNode: setFeedNode,
 		getHead: getHead,
