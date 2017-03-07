@@ -1,4 +1,4 @@
-function EventHandler( snake, food ){
+function EventHandler( snake, food, stateMachine, score ){
 	function keyboardHandler(){
 		$("body").keydown( function(e){
 			keyboardEvent( e.keyCode );
@@ -6,7 +6,7 @@ function EventHandler( snake, food ){
 	};
 	function keyboardEvent( keyCode ){
 		if( keyCode==32 ){
-			//	PAUSE
+			stateMachine.setState( stateMachine.checkState('paused') ? 'ready' : 'paused' );
 		}else if( keyCode>=37 && keyCode<=40 ){
 			snake.setDirection( keyCode==37 ? 3 : keyCode-38 );
 		}
@@ -14,16 +14,19 @@ function EventHandler( snake, food ){
 	function checkCollision(){
 		var himselfCollision = snake.himselfCollision();
 		
+		if( himselfCollision ){
+			stateMachine.setState('finished');
+			console.log( himselfCollision );
+		}
+
+	};
+	function checkFoodCollision(){
 		if( foodCollision() ){
+			score.addScore( food.getScore() );
 			snake.setFeedNode();
 			food.prepareFood();
 			food.clear();
 		}
-		
-		if( himselfCollision ){
-			console.log( himselfCollision );
-		}
-
 	};
 	function foodCollision(){
 		return snake.getHead().getPosition().equalPosition( food.getPosition() );
@@ -35,6 +38,7 @@ function EventHandler( snake, food ){
 	init();
 	
 	return {
-		checkCollision: checkCollision
+		checkCollision: checkCollision,
+		checkFoodCollision: checkFoodCollision
 	}
 };

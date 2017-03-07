@@ -1,13 +1,17 @@
 function Snake( gameSize, canvas ){
 	var nodes = new Array(),
-		direction = 0;
+		direction = 0,
+		lastNodeReference;
 	
 	function prepareSnake(){
 		nodes[0] = new Node( new Position( 0, 0 ), 0, 'snakeTop' );
 		nodes[1] = new Node( new Position( 0, 1 ), 0, 'snakeMid' );		
-		nodes[2] = new Node( new Position( 0, 2 ), 0, 'snakeCor' );
-		nodes[3] = new Node( new Position( 1, 2 ), 3, 'snakeMid' );
-		nodes[4] = new Node( new Position( 2, 2 ), 3, 'snakeBot' );
+		nodes[2] = new Node( new Position( 0, 2 ), 0, 'snakeMid' );
+		nodes[3] = new Node( new Position( 0, 3 ), 0, 'snakeMid' );
+		nodes[4] = new Node( new Position( 0, 4 ), 0, 'snakeMid' );
+		nodes[5] = new Node( new Position( 0, 5 ), 0, 'snakeMid' );
+		nodes[6] = new Node( new Position( 0, 6 ), 0, 'snakeMid' );
+		nodes[7] = new Node( new Position( 0, 7 ), 0, 'snakeBot' );
 	};
 	
 	function paint( ){
@@ -17,6 +21,8 @@ function Snake( gameSize, canvas ){
 	};
 	
 	function clear( ){
+		lastNodeReference.clear(canvas);
+		
 		for( var i=0; i<nodes.length; i++ ){
 			nodes[i].clear(canvas);
 		}
@@ -148,13 +154,12 @@ function Snake( gameSize, canvas ){
 		if( lastNode.isFeed() ){
 			lastNode.clearFeed();
 		}else{
-			nodes[nodes.length-1].clear(canvas) //REMOVING LAST NODE
+			lastNodeReference = lastNode;
 			nodes.pop();	//REMOVING LAST NODE	
 		}
 		updateStartNode(node);
 		updateEndNode();
 		nodes.unshift( node ); //ADDING NEW NODE
-		return true;
 	};
 	
 	function setFeedNode(){
@@ -165,6 +170,7 @@ function Snake( gameSize, canvas ){
 		clear( );
 		paint( );
 	};
+		
 		
 	function init(){
 		prepareSnake();

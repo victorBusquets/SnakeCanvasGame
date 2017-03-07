@@ -130,6 +130,7 @@ function Food( gameSize, canvas ){
 	return {
 		prepareFood: prepareFood,
 		getPosition: getPosition,
+		getScore: getScore,
 		newStep: newStep,
 		clear: clear
 	}

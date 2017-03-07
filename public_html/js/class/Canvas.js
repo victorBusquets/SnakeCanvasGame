@@ -89,6 +89,22 @@ function Canvas(domId, gameSize, fullSize){
 		return cellSize;
 	};
 	
+	function fillText( value, x, y, size, color, align){
+		context.font = size || "25px Arial"; 
+		context.fillStyle = color || "rgba(255, 255, 255, 0.5)";
+		context.textAlign = align || "center"; 
+		context.fillText( value, x, y ); 
+	};
+	
+	function setAlpha( alpha ){
+		context.save();
+		context.globalAlpha = alpha;
+	};
+	
+	function restoreAlpha(){	
+		context.restore();
+	};
+	
 	function init(){		
 		if( fullSize ){ setFullSize() }
 		
@@ -101,9 +117,14 @@ function Canvas(domId, gameSize, fullSize){
 	return {
 		fillRect: fillRect,
 		clearCanvas: clearCanvas,
+		fillText: fillText,
 		clearRect: clearRect,
 		drawImage: drawImage,
 		getSellSize: getSellSize,
+		getHeight: getHeight,
+		getWidth: getWidth,
+		setAlpha: setAlpha,
+		restoreAlpha: restoreAlpha,
 		drawRotatedImage: drawRotatedImage
 	}
 };
