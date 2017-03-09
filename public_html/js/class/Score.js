@@ -1,7 +1,5 @@
 function Score( canvas ){
-	var value = 0,
-		centerX = canvas.getWidth() / 2,
-		centerY = canvas.getHeight() / 2;
+	var value = 0;
 		
 	function addScore( increment ){
 		value += increment;
@@ -14,7 +12,7 @@ function Score( canvas ){
 	
 	function paint(){
 		canvas.setAlpha(0.4);
-		canvas.fillText( value, centerX, centerY );
+		canvas.fillText( value, canvas.getCenterX(), canvas.getCenterY() );
 		canvas.restoreAlpha();
 	};
 	

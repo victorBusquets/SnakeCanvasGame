@@ -3,7 +3,7 @@ function Game ( gameSize ){
 		score	= new Score( canvas ),
 		food 	= new Food( gameSize, canvas ),
 		snake 	= new Snake( gameSize, canvas ),
-		stateMachine = new StateMachine( ),
+		stateMachine = new StateMachine( canvas ),
 		eventHandler = new EventHandler( snake, food, stateMachine, score ),
 		speed 	= 150; 	
 		

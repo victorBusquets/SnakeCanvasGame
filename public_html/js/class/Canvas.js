@@ -89,9 +89,17 @@ function Canvas(domId, gameSize, fullSize){
 		return cellSize;
 	};
 	
+	function getCenterX(){
+		return getWidth() / 2;
+	};
+	
+	function getCenterY(){
+		return getHeight() / 2;
+	};
+	
 	function fillText( value, x, y, size, color, align){
 		context.font = size || "25px Arial"; 
-		context.fillStyle = color || "rgba(255, 255, 255, 0.5)";
+		context.fillStyle = color || "rgba(255, 255, 255, 0.75)";
 		context.textAlign = align || "center"; 
 		context.fillText( value, x, y ); 
 	};
@@ -121,8 +129,8 @@ function Canvas(domId, gameSize, fullSize){
 		clearRect: clearRect,
 		drawImage: drawImage,
 		getSellSize: getSellSize,
-		getHeight: getHeight,
-		getWidth: getWidth,
+		getCenterX: getCenterX,
+		getCenterY: getCenterY,
 		setAlpha: setAlpha,
 		restoreAlpha: restoreAlpha,
 		drawRotatedImage: drawRotatedImage
